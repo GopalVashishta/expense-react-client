@@ -1,8 +1,7 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 function Home(){
     return (
         <div className="container">
-            <h2 className="text-center">Home Page</h2>
+            <h2 className="text-center">Welcome to Expense App</h2>
         </div>
     );
 }

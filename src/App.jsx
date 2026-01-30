@@ -4,11 +4,26 @@ import Login from './pages/Login.jsx';
 import AppLayout from './components/AppLayout.jsx';
 import UserLayout from './components/UserLayout.jsx';
 import Dashboard from './pages/Dashboard.jsx';
-import { useState } from 'react';
+import Register from './pages/Register.jsx';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function App() {
   //Value of userDetails repsersent whteher user is logged in or not
   const [userDetails, setUserDetails] = useState(null);
+
+  // retainLogin
+  const isUserLoggedIn = async () => {
+      try {
+        const resp = await axios.post('http://localhost:5001/auth/is-user-logged-in', {}, {withCredentials: true});
+        setUserDetails(resp.data.user);
+        
+      } catch (error) {
+        console.log(error);
+      }
+  };
+  useEffect(() => {isUserLoggedIn(); }, []) // a func and a dependency array(useState vars)
+
   return (
     <Routes>
       <Route path="/" element={userDetails ? (
@@ -18,6 +33,11 @@ function App() {
           <Home />
         </AppLayout>)
       } />
+
+      <Route path='/register' element={<AppLayout>
+          <Register setUser={setUserDetails}/>
+         </AppLayout>} />
+
       <Route path="/login" element={userDetails ? (
         <Navigate to='/dashboard' />
       ) : (

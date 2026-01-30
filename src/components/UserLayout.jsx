@@ -1,11 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
+import axios from 'axios'
 
 function UserLayout({ children, user, setUser }) {
     const navigate = useNavigate();
     const handleLogout = () => {
         setUser(null);
-        navigate('/login');
+        axios.post('http://localhost:5001/auth/logout');
+        navigate('/');
     };
 
     return (

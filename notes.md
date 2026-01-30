@@ -13,3 +13,5 @@
 
 ## React-Router-Dom -> if state/route changes -> renders the corresponding DOM (acc. to defined routes)
 ### in main.jsx encapusulate the app b/w browser router
+
+## axio is a framework that sends request client -> server (manually done by POSTMAN)

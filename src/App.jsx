@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import AppLayout from './components/AppLayout.jsx';
+import UserLayout from './components/UserLayout.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import { useState } from 'react';
 
@@ -25,9 +26,9 @@ function App() {
         </AppLayout>)
       } />
       <Route path="/dashboard" element={userDetails ? (
-        <AppLayout>
+        <UserLayout user={userDetails} setUser={setUserDetails}>
           <Dashboard user={userDetails} />
-        </AppLayout>
+        </UserLayout>
       ) : (
         <Navigate to='/login' />
       )

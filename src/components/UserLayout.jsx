@@ -4,9 +4,9 @@ import axios from 'axios'
 
 function UserLayout({ children, user, setUser }) {
     const navigate = useNavigate();
-    const handleLogout = () => {
+    const handleLogout = async () => {
         setUser(null);
-        axios.post('http://localhost:5001/auth/logout');
+        await axios.post('http://localhost:5001/auth/logout');
         navigate('/');
     };
 

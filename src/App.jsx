@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 function App() {
   //Value of userDetails repsersent whteher user is logged in or not
   const [userDetails, setUserDetails] = useState(null);
+  const [loading, setLoading] = useState(true); //loadog
 
   // retainLogin
   const isUserLoggedIn = async () => {
@@ -21,9 +22,19 @@ function App() {
       } catch (error) {
         console.log(error);
       }
+      finally{
+        setLoading(false);
+      }
   };
-  useEffect(() => {isUserLoggedIn(); }, []) // a func and a dependency array(useState vars)
+  useEffect(() => {isUserLoggedIn(); }, []) // a func and a dependency array(useState vars) only works after page render
+  if(loading){
+    return (
+      <div className="container text-center">
+        <h3>Loading....</h3>
+      </div>
+    );
 
+  }
   return (
     <Routes>
       <Route path="/" element={userDetails ? (

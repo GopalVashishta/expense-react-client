@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios'; // POSTMAN guy
+import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
 // import ".login.css"; this will add css to this component
 function Login({ setUser }) {
     const [formdata, setFormdata] = useState({ email: "", password: "" });
@@ -45,29 +46,65 @@ function Login({ setUser }) {
                 setMessage("User Authenticated");
             }catch(err){
                 console.log("Error during login:", err);
-                setErrors({message: "Login failed. Please try again."});
+                setErrors({message: err.status === 401 ? "Please log in via Google" : "Login failed. Please try again."});
             }
         }else{
             console.log("Invalid form");
         }
     }
 
+    const handleGoogleSuccess = async (authResponse) => {
+        try{
+            const body = {
+                idToken: authResponse?.credential
+            };
+            const resp = await axios.post("http://localhost:5001/auth/google-auth", body, {withCredentials: true});
+            setUser(resp.data.user);
+        }catch(err){
+            console.log("Error during Google SSO login:", err);
+            setErrors({message: "Google SSO login failed. Please try again."});
+        }
+    }
+
+    const handleGoogleError = (error) => {
+        console.log(error);
+        setErrors({message: "Something went wrong while performing google single sign-on"});
+    } 
+
     return (
         <div className="container">
             <h3 className="text-center">Login Page</h3>
             {message && (message)}
             {errors.message && (errors.message)}
-            
-            <form onSubmit={handleFormSubmit}>
-                
-                <label>Email</label>
-                <input name="email" type="email" placeholder="Email" className="form-label mb-2" 
-                onChange={handleChange} value={formdata.email} required={true} /> <br />
-                <label>Password</label>
-                <input name="password" type="password" placeholder="Password" className="form-label mb-2" 
-                onChange={handleChange} value={formdata.password} required={true} /> <br />
-                <button className="btn btn-primary w-20" type="submit">Login</button>
-            </form>
+            <div className="row justify-content-center"> 
+                <div className="col-6">
+                    <form onSubmit={handleFormSubmit}>
+                        
+                        <label>Email</label>
+                        <input name="email" type="email" placeholder="Email" className="form-control mb-2" 
+                        onChange={handleChange} value={formdata.email} required={true} />
+                        {errors.email && (errors.email)}
+                        <br />
+
+                        <label>Password</label>
+                        <input name="password" type="password" placeholder="Password" className="form-control mb-2" 
+                        onChange={handleChange} value={formdata.password} required={true} /> 
+                        {errors.password && (errors.password)}
+                        <br />
+                        
+                        <button className="btn btn-primary w-20" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+
+            <div className="row justify-content-center">
+                <div className="col-6">
+                    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> {/* Like BrowserRouter in main.jsx */}
+                        <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} />
+                    </GoogleOAuthProvider>
+                </div>
+            </div>
+
         </div>
     );
 }

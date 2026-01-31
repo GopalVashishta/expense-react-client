@@ -52,7 +52,8 @@ function Register({ setUser }){
 
                     <label>Email</label>
                     <input type="email" name="email" value={formdata.email} className="form-control" 
-                    onChange={handleChange} required={true}></input> <br/>
+                    onChange={handleChange} required={true}></input>
+                     <br/>
 
                     <label>Password</label>
                     <input type="password" name="password" value={formdata.password} className="form-control" 

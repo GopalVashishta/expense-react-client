@@ -59,7 +59,7 @@ function Register({ setUser }){
                     <input type="password" name="password" value={formdata.password} className="form-control" 
                     onChange={handleChange} required={true}></input>
                     <br />
-                    <button type="submit">Register</button>
+                    <button type="submit" className='btn btn-primary w-100'>Register</button>
                 </form>
             </div>
         </>

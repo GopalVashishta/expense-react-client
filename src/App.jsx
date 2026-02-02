@@ -5,6 +5,8 @@ import AppLayout from './components/AppLayout.jsx';
 import UserLayout from './components/UserLayout.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Register from './pages/Register.jsx';
+import ResetPassword from './pages/resetPassword.jsx';
+import ChangePassword from './pages/changePassword.jsx';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -64,6 +66,15 @@ function App() {
         <Navigate to='/login' />
       )
       } />
+      <Route path='/reset-password' element={
+        <AppLayout>
+          <ResetPassword />
+        </AppLayout>} />
+      <Route path='/change-password' element={
+        <AppLayout>
+          <ChangePassword />
+        </AppLayout>} />
+
     </Routes>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from 'axios'; // POSTMAN guy
 import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
 // import ".login.css"; this will add css to this component
@@ -90,18 +91,25 @@ function Login({ setUser }) {
                         <input name="password" type="password" placeholder="Password" className="form-control mb-2" 
                         onChange={handleChange} value={formdata.password} required={true} /> 
                         {errors.password && (errors.password)}
+                        <Link to='/reset-password' className='row justify-content-start'>Forgot Password?</Link>
                         <br />
                         
-                        <button className="btn btn-primary w-20" type="submit">Login</button>
+                        <button className="btn btn-primary w-100" type="submit">Login</button>
                     </form>
                 </div>
             </div>
-
+            <br />
             <div className="row justify-content-center">
                 <div className="col-6">
                     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> {/* Like BrowserRouter in main.jsx */}
                         <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} />
                     </GoogleOAuthProvider>
+                </div>
+            </div>
+
+            <div className="row justify-content-center">
+                <div className="col-6">
+                    <p>Don't have an account? <Link to="/register">Register here</Link></p>
                 </div>
             </div>
 

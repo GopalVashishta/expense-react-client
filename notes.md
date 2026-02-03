@@ -15,3 +15,5 @@
 ### in main.jsx encapusulate the app b/w browser router
 
 ## axio is a framework that sends request client -> server (manually done by POSTMAN)
+
+## store.js & action/user the store file contains teh list of reducers which are available and can be called

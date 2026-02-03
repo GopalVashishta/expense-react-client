@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import axios from 'axios'; // POSTMAN guy
 import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
 import { serverEndpoint } from "../config/appConfig.js";
-
+import { useDispatch } from "react-redux";
+import { SET_USER } from "../redux/user/action.js";
 // import ".login.css"; this will add css to this component
 function Login({ setUser }) {
     const [formdata, setFormdata] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState("");
-
+    const dispatch = useDispatch(); // gives us the dispatch function
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -47,6 +48,8 @@ function Login({ setUser }) {
                 console.log(res);
                 setUser(res.data.user);
                 setMessage("User Authenticated");
+                dispatch({type: SET_USER, payload: res.data.user}); // inform redux about the new userDetails
+
             }catch(err){
                 console.log("Error during login:", err);
                 setErrors({message: err.status === 401 ? "Please log in via Google" : "Login failed. Please try again."});
@@ -62,7 +65,7 @@ function Login({ setUser }) {
                 idToken: authResponse?.credential
             };
             const resp = await axios.post(`${serverEndpoint}/auth/google-auth`, body, {withCredentials: true});
-            setUser(resp.data.user);
+            dispatch({type: SET_USER, payload: resp.data.user});
         }catch(err){
             console.log("Error during Google SSO login:", err);
             setErrors({message: "Google SSO login failed. Please try again."});

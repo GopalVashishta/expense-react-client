@@ -11,10 +11,16 @@ import Logout from './pages/Logout.jsx';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { serverEndpoint } from './config/appConfig.js';
+import { useSelector } from 'react-redux';
 
 function App() {
   //Value of userDetails repsersent whteher user is logged in or not
-  const [userDetails, setUserDetails] = useState(null);
+  //const [userDetails, setUserDetails] = useState(null);  /////////replace by redux
+
+  //useSelector takes 1 funtion as input. Redux calls the func that you pass to useSelector 
+  // with all the values its storing/managing.
+  // We need to take ou userDetails since we're interested in userDetails obj;
+  const userDetails = useSelector((state) => state.userDetails); 
   const [loading, setLoading] = useState(true); //loadog
 
   // retainLogin
@@ -52,18 +58,18 @@ function App() {
       } />
 
       <Route path='/register' element={<AppLayout>
-          <Register setUser={setUserDetails}/>
+          <Register />
          </AppLayout>} />
 
       <Route path="/login" element={userDetails ? (
         <Navigate to='/dashboard' />
       ) : (
         <AppLayout>
-          <Login setUser={setUserDetails} />
+          <Login />
         </AppLayout>)
       } />
       <Route path="/dashboard" element={userDetails ? (
-        <UserLayout user={userDetails} setUser={setUserDetails}>
+        <UserLayout user={userDetails}>
           <Dashboard user={userDetails} />
         </UserLayout>
       ) : (
@@ -80,7 +86,7 @@ function App() {
         </AppLayout>} />
       <Route path='/logout' element={
         <AppLayout>
-          <Logout setUser={setUserDetails} />
+          <Logout />
         </AppLayout>} />
 
     </Routes>

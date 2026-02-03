@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 function Header(){
     // this below nav bard code is a template of html converted to jsx format
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-            <div className="container-fluid">
-                <a className="navbar-brand" href="#">
+        <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom border-body">
+            <div className="container">
+                <Link className='navbar-brand' to='/'>
                 ExpenseApp
-                </a>
+                </Link>
                 <button
                 className="navbar-toggler"
                 type="button"

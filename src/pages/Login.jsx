@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'; // POSTMAN guy
 import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
+import { serverEndpoint } from "../config/appConfig.js";
+
 // import ".login.css"; this will add css to this component
 function Login({ setUser }) {
     const [formdata, setFormdata] = useState({ email: "", password: "" });
@@ -41,7 +43,7 @@ function Login({ setUser }) {
                     password: formdata.password
                 };
                 const config = {withCredentials: true};
-                const res = await axios.post('http://localhost:5001/auth/login', body, config);
+                const res = await axios.post(`${serverEndpoint}/auth/login`, body, config);
                 console.log(res);
                 setUser(res.data.user);
                 setMessage("User Authenticated");
@@ -59,7 +61,7 @@ function Login({ setUser }) {
             const body = {
                 idToken: authResponse?.credential
             };
-            const resp = await axios.post("http://localhost:5001/auth/google-auth", body, {withCredentials: true});
+            const resp = await axios.post(`${serverEndpoint}/auth/google-auth`, body, {withCredentials: true});
             setUser(resp.data.user);
         }catch(err){
             console.log("Error during Google SSO login:", err);

@@ -7,8 +7,10 @@ import Dashboard from './pages/Dashboard.jsx';
 import Register from './pages/Register.jsx';
 import ResetPassword from './pages/resetPassword.jsx';
 import ChangePassword from './pages/changePassword.jsx';
+import Logout from './pages/Logout.jsx';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { serverEndpoint } from './config/appConfig.js';
 
 function App() {
   //Value of userDetails repsersent whteher user is logged in or not
@@ -18,7 +20,7 @@ function App() {
   // retainLogin
   const isUserLoggedIn = async () => {
       try {
-        const resp = await axios.post('http://localhost:5001/auth/is-user-logged-in', {}, {withCredentials: true});
+        const resp = await axios.post(`${serverEndpoint}/auth/is-user-logged-in`, {}, {withCredentials: true});
         setUserDetails(resp.data.user);
         
       } catch (error) {
@@ -40,7 +42,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={userDetails ? (
-        <Navigate to='/dashboard' />
+        <UserLayout user={userDetails}>
+          <Dashboard user={userDetails} />
+        </UserLayout>
       ) : (
         <AppLayout>
           <Home />
@@ -73,6 +77,10 @@ function App() {
       <Route path='/change-password' element={
         <AppLayout>
           <ChangePassword />
+        </AppLayout>} />
+      <Route path='/logout' element={
+        <AppLayout>
+          <Logout setUser={setUserDetails} />
         </AppLayout>} />
 
     </Routes>

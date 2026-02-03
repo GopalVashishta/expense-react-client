@@ -11,7 +11,7 @@ import Logout from './pages/Logout.jsx';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { serverEndpoint } from './config/appConfig.js';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
   //Value of userDetails repsersent whteher user is logged in or not
@@ -22,12 +22,14 @@ function App() {
   // We need to take ou userDetails since we're interested in userDetails obj;
   const userDetails = useSelector((state) => state.userDetails); 
   const [loading, setLoading] = useState(true); //loadog
-
+  const dispatch = useDispatch();
   // retainLogin
   const isUserLoggedIn = async () => {
       try {
         const resp = await axios.post(`${serverEndpoint}/auth/is-user-logged-in`, {}, {withCredentials: true});
-        setUserDetails(resp.data.user);
+        if(resp.status !==200) throw new Error("User not logged in");
+        //setUserDetails(resp.data.user); //////// replace by redux
+        dispatch({ type: 'SET_USER', payload: {payload: resp.data.user} });
         
       } catch (error) {
         console.log(error);

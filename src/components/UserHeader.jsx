@@ -21,6 +21,15 @@ function UserHeader() {
                 >
                     <span className="navbar-toggler-icon" />
                 </button>
+
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li>
+                        <Link className="nav-link" to="/groups">
+                            My Groups
+                        </Link>
+                    </li>
+                </ul>
+                
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item dropdown">

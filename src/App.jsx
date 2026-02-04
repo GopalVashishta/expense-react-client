@@ -8,6 +8,7 @@ import Register from './pages/Register.jsx';
 import ResetPassword from './pages/resetPassword.jsx';
 import ChangePassword from './pages/changePassword.jsx';
 import Logout from './pages/Logout.jsx';
+import Groups from './pages/Groups.jsx';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { serverEndpoint } from './config/appConfig.js';
@@ -90,7 +91,14 @@ function App() {
         <AppLayout>
           <Logout />
         </AppLayout>} />
-
+      <Route path='/groups' element={userDetails ? (
+              <UserLayout user={userDetails}>
+                <Groups />
+              </UserLayout>
+            ) : (
+              <Navigate to='/login' />
+            )
+      } />
     </Routes>
   );
 }

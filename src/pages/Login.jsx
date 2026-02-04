@@ -6,7 +6,7 @@ import { serverEndpoint } from "../config/appConfig.js";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "../redux/user/action.js";
 // import ".login.css"; this will add css to this component
-function Login({ setUser }) {
+function Login() {
     const [formdata, setFormdata] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState("");
@@ -46,7 +46,7 @@ function Login({ setUser }) {
                 const config = {withCredentials: true};
                 const res = await axios.post(`${serverEndpoint}/auth/login`, body, config);
                 console.log(res);
-                setUser(res.data.user);
+                //setUser(res.data.user);
                 setMessage("User Authenticated");
                 dispatch({type: SET_USER, payload: res.data.user}); // inform redux about the new userDetails
 

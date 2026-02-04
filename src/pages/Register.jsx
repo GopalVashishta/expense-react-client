@@ -41,32 +41,36 @@ function Register({ setUser }){
     return (
         <> 
             <div className="container">
-                <h3 className="text-center">Register Page</h3>
-                {message && (message)}
-                {errors.message && (errors.message)}
+                 <div className="row justify-content-center"> 
+                    <div className="col-6">
+                        <h3 className="text-center">Register Page</h3>
+                        {message && (message)}
+                        {errors.message && (errors.message)}
 
-                <form onSubmit={handleFormSubmit}>
-                    <label>Name</label>
-                    <input type="text" name="name" className="form-control" value={formdata.name} onChange={handleChange} required={true} />
-                    <br />
+                        <form onSubmit={handleFormSubmit}>
+                            <label>Name</label>
+                            <input type="text" name="name" className="form-control" value={formdata.name} onChange={handleChange} required={true} />
+                            <br />
 
-                    <label>Email</label>
-                    <input type="email" name="email" value={formdata.email} className="form-control" 
-                    onChange={handleChange} required={true}></input>
-                     <br/>
+                            <label>Email</label>
+                            <input type="email" name="email" value={formdata.email} className="form-control" 
+                            onChange={handleChange} required={true}></input>
+                            <br/>
 
-                    <label>Password</label>
-                    <input type="password" name="password" value={formdata.password} className="form-control" 
-                    onChange={handleChange} required={true}></input>
-                    <br />
-                    <button type="submit" className='btn btn-primary w-100'>Register</button>
-                </form>
+                            <label>Password</label>
+                            <input type="password" name="password" value={formdata.password} className="form-control" 
+                            onChange={handleChange} required={true}></input>
+                            <br />
+                            <button type="submit" className='btn btn-primary w-100'>Register</button>
+                        </form>
 
-                <div className="row justify-content-center">
-                <div className="col-6">
-                    <p>Already have an account? <Link to="/login">Login here</Link></p>
+                        <div className="row justify-content-center">
+                        <div className="col-6">
+                            <p>Already have an account? <Link to="/login">Login here</Link></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                </div>
             </div>
         </>
     );

@@ -30,7 +30,7 @@ function App() {
         const resp = await axios.post(`${serverEndpoint}/auth/is-user-logged-in`, {}, {withCredentials: true});
         if(resp.status !==200) throw new Error("User not logged in");
         //setUserDetails(resp.data.user); //////// replace by redux
-        dispatch({ type: 'SET_USER', payload: {payload: resp.data.user} });
+        dispatch({ type: 'SET_USER', payload: resp.data.user });
         
       } catch (error) {
         console.log(error);

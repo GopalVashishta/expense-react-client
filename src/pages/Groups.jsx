@@ -2,15 +2,17 @@ import axios from 'axios';
 import {serverEndpoint} from '../config/appConfig';
 import { useEffect, useState } from 'react';
 import GroupCard from '../components/GroupCard';
+import CreateGroupModal from '../components/CreateGroupModal';
 
 function Groups(){
     const [groups, setGroups] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [show, setShow] = useState(false);    
+    
     const fetchGroups = async () => {
         try{
-           const resp =  await axios.get(`${serverEndpoint}/group/my-groups`, { withCredentials: true });
-           setGroups(resp.data);
+           const resp =  await axios.get(`${serverEndpoint}/group/my-group`, { withCredentials: true });
+           setGroups(resp.data.groups || []);
         }
         catch(err){
             console.log("Error fetching groups:", err);
@@ -18,6 +20,9 @@ function Groups(){
         finally {
             setLoading(false);
         }
+    }
+    const handleGroupUpdateSuccess = (data) => {
+        setGroups((prevGroups) => [...prevGroups, data]);
     }
     useEffect(() => {fetchGroups();}, [])
     if(loading){
@@ -35,7 +40,7 @@ function Groups(){
                         <h3>Your Groups</h3>
                         <p className="text-muted">Manage your shared expenses and split expenses</p>   
                     </div>
-                    <button className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                    <button className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onClick={() => setShow(true)}>
                         Create Group
                     </button>
                 </div>
@@ -46,10 +51,12 @@ function Groups(){
                     <div className="row g-4">
                         {groups.map((group) =>
                         <div className="col-md-6 col-lg-4">
-                            <GroupCard key={group.id} group={group} />
+                            <GroupCard key={group._id} group={group} onUpdate={handleGroupUpdateSuccess} />
                         </div>
                     )}
                     </div>)}
+                
+                <CreateGroupModal show={show} onHide={() => setShow(false)} onSuccess={handleGroupUpdateSuccess} />
             </div>
         </>
     );

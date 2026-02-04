@@ -1,9 +1,26 @@
 import { useState } from "react";
+import { serverEndpoint } from "../config/appConfig";
 
-function GroupCard({ group }){
+function GroupCard({ group, onUpdate }){
     const [showMembers, setShowMembers] = useState(false);
+    const [memberEmail, setMemberEmail] = useState("");
+    const [errors, setErrors] = useState({});
+
     const handleShowMembers = () => {
         setShowMembers(!showMembers);
+    };
+    const handleAddMember = async () => {
+        if(memberEmail.length === 0) return;
+        try{
+            const resp = await axios.post(`${serverEndpoint}/group/members/add`, {
+                groupId: group._id,
+                membersEmail: [memberEmail]
+            }, {withCredentials: true});
+            onUpdate(resp.data);
+        }catch(error){
+            console.log(errors);
+            setErrors({message: "Unable to add members"});
+        }
     };
     return (
         <>
@@ -25,6 +42,16 @@ function GroupCard({ group }){
                             ))}
                         </div>
                     )}
+
+                    <div className='mb-3'>
+                        <label className="form-label extra-small fw-bold text-secondary">Add Member</label>
+                        <div className="input-group input-group-sm">
+                            <input type="email" className="form-control border-end-0" value={memberEmail}
+                            onChange={(e) => {setMemberEmail(e.target.value)}}></input>
+
+                            <button className="btn btn-primary px-3" onClick={handleAddMember}>Add</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

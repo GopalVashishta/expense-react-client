@@ -21,8 +21,13 @@ function Groups(){
             setLoading(false);
         }
     }
-    const handleGroupUpdateSuccess = (data) => {
-        setGroups((prevGroups) => [...prevGroups, data]);
+    const handleGroupCreated = (newGroup) => {
+        setGroups((prevGroups) => [...prevGroups, newGroup]);
+    }
+    const handleGroupUpdated = (updatedGroup) => {
+        setGroups((prevGroups) => 
+            prevGroups.map((g) => g._id === updatedGroup._id ? updatedGroup : g)
+        );
     }
     useEffect(() => {fetchGroups();}, [])
     if(loading){
@@ -50,13 +55,13 @@ function Groups(){
                 ) : (
                     <div className="row g-4">
                         {groups.map((group) =>
-                        <div className="col-md-6 col-lg-4">
-                            <GroupCard key={group._id} group={group} onUpdate={handleGroupUpdateSuccess} />
+                        <div className="col-md-6 col-lg-4" key={group._id}>
+                            <GroupCard group={group} onUpdate={handleGroupUpdated} />
                         </div>
                     )}
                     </div>)}
                 
-                <CreateGroupModal show={show} onHide={() => setShow(false)} onSuccess={handleGroupUpdateSuccess} />
+                <CreateGroupModal show={show} onHide={() => setShow(false)} onSuccess={handleGroupCreated} />
             </div>
         </>
     );

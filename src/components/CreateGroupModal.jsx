@@ -7,6 +7,8 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
     const user = useSelector((state) => state.userDetails);
     const [formdata, setFormdata] = useState({ name: "", description: "" });
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+
     const validate = () => {
         let isValid = true;
         const newErrors = {};
@@ -28,10 +30,14 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
             ...prev,
             [name]: value
         }));
+        if(errors[e.target.name]){
+            setErrors({ ...errors, [e.target.name]: null });
+        }
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(validate()){
+            setLoading(true);
             try{
                 const resp = await axios.post(`${serverEndpoint}/group/create`, {
                     name: formdata.name,
@@ -45,20 +51,24 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
                     name: formdata.name,
                     description: formdata.description,
                     membersEmail: [user.email],
+                    adminEmail: user.email,
                     _id: groupId,
                     paymentStatus: {
                         amount: 0,
                         currency: "INR",
-                        date: '2:00PM 2/4/2026',
+                        date: new Date().toISOString(),
                         isPaid: false
                     },
                     thumbnail: "",
                     isPaid: false
                 });
+                setFormdata({name: "", description:""});
                 onHide();
             }catch(error){
                 console.log("Error creating group:", error);
                 setErrors({message: "Failed to create group. Please try again."});
+            }finally{
+                setLoading(false);
             }
         }
     }
@@ -67,41 +77,61 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
 
     return (
         <>
-            <div className="modal show d-block">
+            <div className="modal show d-block"
+                tabIndex="-1"
+                style={{
+                    backgroundColor: "rgba(15, 23, 42, 0.6)",
+                    backdropFilter: "blur(4px)",}}
+                >
+
                 <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content border-0 rounded-4 shadow">
+                    <div className="modal-content border-0 rounded-4 shadow-lg p-3">
                         <form onSubmit={handleSubmit}>
-                            <div className="modal-header border-0">
-                                <h5>Create Group</h5>
-                                <button type='button' className='btn-close' onClick={onHide}></button>
+                            <div className="modal-header border-0 pb-0">
+                                <h5>Start a new Circle</h5>
+                                <button type='button' className='btn-close shadow-none' onClick={onHide}></button>
                             </div>
 
-                            <div className='modal-body'>
-                                <div className="mb-3">
-                                    <label className="form-label small fw-bold">Group Name</label>
-                                    <input type="text" name="name" value={formdata.name} onChange={onChange} className={errors.name ? "form-control is-invalid" : "form-control"} />
+                            <div className='modal-body py-4'>
+                                <p className="text-muted small mb-4">
+                                    Create a shared space to manage bills with your
+                                    friends, roommates, or travel partners.
+                                </p>
+
+                                <div className="mb-4">
+                                    <label className="form-label small fw-bold text-secondary
+text-uppercase mb-2">Group Name</label>
+                                    <input placeholder="e.g., Goa Trip 2026" type="text" name="name" value={formdata.name} onChange={onChange} className={`form-control form-control-lg bg-light
+border-0 fs-6 ${errors.name ? "is-invalid" : ""}`} />
                                 </div>
                                 {errors.name && (
-                                    <div className="invalid-feedback" >
+                                    <div className="invalid-feedback ps-1" >
                                         {errors.name}
                                     </div>
                                 )}
 
-                                <div className="mb-3">
-                                    <label className="form-label small fw-bold">Description</label>
-                                    <textarea name="description" value={formdata.description} onChange={onChange} className={errors.description ? "form-control is-invalid" : "form-control"} rows="3"></textarea>
+                                <div className="mb-2">
+                                    <label className="form-label small fw-bold text-secondary
+text-uppercase mb-2">Description</label>
+                                    <textarea name="description" value={formdata.description} onChange={onChange} className={`form-control form-control-lg bg-light
+border-0 fs-6 ${ errors.description ? "is-invalid" : ""}`}
+ rows="3"></textarea>
                                 </div>
                                 {errors.description && (
-                                    <div className="invalid-feedback" >
+                                    <div className="invalid-feedback ps-1" >
                                         {errors.description}
                                     </div>
                                 )}
                             </div>
 
                             <div className="modal-footer border-0">
-                                <button type="button" className="btn btn-light rounded-pill" onClick={onHide}>Cancel</button>
+                                <button type="button" className="btn btn-light rounded-pill  px-4 fw-medium" onClick={onHide} disabled={loading}>Cancel</button>
 
-                                <button type="submit" className="btn btn-primary mx-4 rounded-pill">Add</button>
+                                <button type="submit" className="btn btn-primary rounded-pill px-5 fw-bold
+shadow-sm" disabled={loading}>{loading ? ( <>
+                                            <span className="spinner-border spinner-border-sm
+me-2" role="status" aria-hidden="true" ></span> Creating... </> ) : ( "Create Group" )}
+</button>
                             </div>
                         </form>
                     </div>

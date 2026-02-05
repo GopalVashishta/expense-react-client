@@ -24,7 +24,7 @@ function Groups(){
     const handleGroupCreated = (newGroup) => {
         setGroups((prevGroups) => [...prevGroups, newGroup]);
     }
-    const handleGroupUpdated = (updatedGroup) => {
+    const handleGroupUpdateSuccess = (updatedGroup) => {
         setGroups((prevGroups) => 
             prevGroups.map((g) => g._id === updatedGroup._id ? updatedGroup : g)
         );
@@ -51,12 +51,33 @@ function Groups(){
                 </div>
 
                 {groups.length === 0  ? (
-                    <div className=""> <p>No groups found. Start by creating one!</p> </div>
+                    <div className="text-center py-5 bg-light rounded-5 border border-dashed border-primary border-opacity-25 shadow-inner">
+                        <div className="bg-white rounded-circle d-inline-flex p-4 mb-4 shadow-sm">
+                            <i
+                                className="bi bi-people text-primary"
+                                style={{ fontSize: "3rem" }}
+                            ></i>
+                        </div>
+                        <h4 className="fw-bold">No Groups Found</h4>
+                        <p
+                            className="text-muted mx-auto mb-4"
+                            style={{ maxWidth: "400px" }}
+                        >
+                            You haven't joined any groups yet. Create a group to
+                            start splitting bills with your friends or roommates!
+                        </p>
+                        <button
+                            className="btn btn-outline-primary rounded-pill px-4"
+                            onClick={() => setShow(true)}
+                        >
+                            Get Started
+                        </button>
+                    </div>
                 ) : (
-                    <div className="row g-4">
+                    <div className="row g-4 animate__animated animate__fadeIn">
                         {groups.map((group) =>
                         <div className="col-md-6 col-lg-4" key={group._id}>
-                            <GroupCard group={group} onUpdate={handleGroupUpdated} />
+                            <GroupCard group={group} onUpdate={handleGroupUpdateSuccess} />
                         </div>
                     )}
                     </div>)}

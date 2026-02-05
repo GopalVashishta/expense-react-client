@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { serverEndpoint } from "../config/appConfig";
 
 function GroupCard({ group, onUpdate }){
@@ -7,6 +8,7 @@ function GroupCard({ group, onUpdate }){
     const [memberEmail, setMemberEmail] = useState("");
     const [errors, setErrors] = useState({});
     const [showGroupDetails, setShowGroupDetails] = useState(false);
+    
     const handleShowMembers = () => {
         setShowMembers(!showMembers);
     };
@@ -15,7 +17,7 @@ function GroupCard({ group, onUpdate }){
         try{
             const resp = await axios.put(`${serverEndpoint}/group/members/add`, {
                 groupId: group._id,
-                membersEmail: [memberEmail]
+                emails: [memberEmail]
             }, {withCredentials: true});
             onUpdate(resp.data.group);
             setMemberEmail("");
@@ -53,7 +55,7 @@ function GroupCard({ group, onUpdate }){
         try{
             const resp = await axios.put(`${serverEndpoint}/group/members/remove`, {
                 groupId: groupId,
-                membersEmail: [email]
+                emails: [email]
             }, {withCredentials: true});
             onUpdate(resp.data.group);
         }
@@ -64,9 +66,9 @@ function GroupCard({ group, onUpdate }){
     }
     return (
         <>
-            <div className="card h-100 border-0 shadow-sm rounded-4 position-relative">
-                <div className="card-body">
-                    <div className="d-flex justify-content-between align-items-center mb-2">
+            <div className="card h-100 border-0 shadow-sm rounded-4 transition-hover">
+                <div className="card-body  p-4 d-flex flex-column">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
                         <h5 className="">{group.name}</h5>
                         {/*add logic to handle click of this button*/}
                         <button className="btn btn-sm btn-link p-0" onClick={handleShowMembers}>

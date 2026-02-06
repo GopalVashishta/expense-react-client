@@ -10,6 +10,7 @@ import ChangePassword from './pages/changePassword.jsx';
 import Logout from './pages/Logout.jsx';
 import Groups from './pages/Groups.jsx';
 import GroupExpenses from './pages/GroupExpenses.jsx';
+import ManageUsers from './pages/ManageUsers.jsx';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { serverEndpoint } from './config/appConfig.js';
@@ -98,6 +99,15 @@ function App() {
             ) : (
               <Navigate to='/login' />
             )
+      } />
+      <Route path='/manage-users' element={
+          userDetails ? (
+            <UserLayout>
+              <ManageUsers />
+            </UserLayout>
+          ) : (
+            <Navigate to='/login' />
+          )
       } />
     </Routes>
   );

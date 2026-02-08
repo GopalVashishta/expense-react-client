@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { serverEndpoint } from '../config/appConfig';
 import axios from 'axios';
+import Can from './components/Can';
 
 function ManageUsers() {
     const [errors, setErrors] = useState({});
@@ -96,45 +97,46 @@ function ManageUsers() {
             {errors.message && <div className="alert alert-danger" role="alert">{errors.message}</div>}
             {message && <div className="alert alert-success" role="alert">{message}</div>}
             <div className='row'>
-                <div className='col md-3'>
-                    <div className='card shadow-sm'>
-                        <div className='card-header'>
-                            <h5>Add Members</h5>
-                        </div>
+                <Can requiredPermission="canCreateUsers">
+                    <div className='col md-3'>
+                        <div className='card shadow-sm'>
+                            <div className='card-header'>
+                                <h5>Add Members</h5>
+                            </div>
 
-                        <div className='card-body p-0'>
-                            <form onSubmit={handleSubmit}>
-                                <div className='mb-3'>
-                                    <label className='form-label'>Name</label>
-                                    <input type="text" name="name" className={errors.name ? 'form-control is-invalid': 'form-control'}
-                                    value={formData.name} onChange={handleChange} />
-                                </div>
-                                <div className='mb-3'>
-                                    <label className='form-label'>Email</label>
-                                    <input type="text" name="email" className={errors.email ? 'form-control is-invalid': 'form-control'}
-                                    value={formData.email}  onChange={handleChange}/>
-                                </div>
-                                <div>
-                                    <label className='form-label'>Role</label>
-                                    <select name='role' onChange={handleChange} className={errors.role ? 'form-select is-invalid':'form-select'} value={formData.role}>
-                                        <option value='Select'>Select</option>
-                                        <option value='Manager'>Manager</option>
-                                        <option value='Viewer'>Viewer</option>
-                                    </select>
-                                    {errors.role && (
-                                        <div className="invalid-feedback ps-1">
-                                            {errors.role}
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <button type="submit" className="btn btn-primary" disabled={actionLoading}>Submit</button>
-                                </div>
-                            </form>
+                            <div className='card-body p-0'>
+                                <form onSubmit={handleSubmit}>
+                                    <div className='mb-3'>
+                                        <label className='form-label'>Name</label>
+                                        <input type="text" name="name" className={errors.name ? 'form-control is-invalid': 'form-control'}
+                                        value={formData.name} onChange={handleChange} />
+                                    </div>
+                                    <div className='mb-3'>
+                                        <label className='form-label'>Email</label>
+                                        <input type="text" name="email" className={errors.email ? 'form-control is-invalid': 'form-control'}
+                                        value={formData.email}  onChange={handleChange}/>
+                                    </div>
+                                    <div>
+                                        <label className='form-label'>Role</label>
+                                        <select name='role' onChange={handleChange} className={errors.role ? 'form-select is-invalid':'form-select'} value={formData.role}>
+                                            <option value='Select'>Select</option>
+                                            <option value='Manager'>Manager</option>
+                                            <option value='Viewer'>Viewer</option>
+                                        </select>
+                                        {errors.role && (
+                                            <div className="invalid-feedback ps-1">
+                                                {errors.role}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <button type="submit" className="btn btn-primary" disabled={actionLoading}>Submit</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                </Can>
                 <div className='col-md-9'>
                     <div className="card shadow-sm">
                         <div className='card-header'>

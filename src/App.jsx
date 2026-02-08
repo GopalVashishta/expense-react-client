@@ -11,6 +11,8 @@ import Logout from './pages/Logout.jsx';
 import Groups from './pages/Groups.jsx';
 import GroupExpenses from './pages/GroupExpenses.jsx';
 import ManageUsers from './pages/ManageUsers.jsx';
+import ProtectedRoute from './rbac/ProtectedRoute';
+import UnauthorizedAccess from './components/errors/UnauthorizedAccess';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { serverEndpoint } from './config/appConfig.js';
@@ -102,13 +104,25 @@ function App() {
       } />
       <Route path='/manage-users' element={
           userDetails ? (
-            <UserLayout>
-              <ManageUsers />
-            </UserLayout>
+            <ProtectedRoute roles={['admin']}>
+              <UserLayout>
+                <ManageUsers />
+              </UserLayout>
+            </ProtectedRoute>
           ) : (
             <Navigate to='/login' />
           )
       } />
+        <Route path='/unauthorized-access' elements={
+          userDetails ? (
+            <UserLayout>
+              <UnauthorizedAccess />
+            </UserLayout>
+          ) : (
+          <AppLayout>
+              <UnauthorizedAccess />
+          </AppLayout>)
+        } />
     </Routes>
   );
 }

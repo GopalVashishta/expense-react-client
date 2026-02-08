@@ -3,11 +3,13 @@ import {serverEndpoint} from '../config/appConfig';
 import { useEffect, useState } from 'react';
 import GroupCard from '../components/GroupCard';
 import CreateGroupModal from '../components/CreateGroupModal';
+import { usePermissions } from '../rbac/PermissionContext';
 
 function Groups(){
     const [groups, setGroups] = useState([]);
     const [loading, setLoading] = useState(true);
     const [show, setShow] = useState(false);    
+    const permissions = usePermissions();
     
     const fetchGroups = async () => {
         try{

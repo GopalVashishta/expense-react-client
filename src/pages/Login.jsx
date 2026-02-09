@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'; // POSTMAN guy
-import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { serverEndpoint } from "../config/appConfig.js";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "../redux/user/action.js";
@@ -23,12 +23,12 @@ function Login() {
     const validate = () => {
         let newErorrs = {};
         let isValid = true;
-        if(formdata.email.trim().length === 0){
+        if (formdata.email.trim().length === 0) {
             newErorrs.email = "Email is required";
             isValid = false;
         }
 
-        if(formdata.password.trim().length === 0){
+        if (formdata.password.trim().length === 0) {
             newErorrs.password = "Password is required";
             isValid = false;
         }
@@ -37,68 +37,68 @@ function Login() {
     }
     const handleFormSubmit = async (event) => {
         event.preventDefault();//prevent default behaviour i.e.  Page reload
-        if(validate()){
-            try{ 
+        if (validate()) {
+            try {
                 const body = {
                     email: formdata.email,
                     password: formdata.password
                 };
-                const config = {withCredentials: true};
+                const config = { withCredentials: true };
                 const res = await axios.post(`${serverEndpoint}/auth/login`, body, config);
                 console.log(res);
                 //setUser(res.data.user);
                 setMessage("User Authenticated");
-                dispatch({type: SET_USER, payload: res.data.user}); // inform redux about the new userDetails
+                dispatch({ type: SET_USER, payload: res.data.user }); // inform redux about the new userDetails
 
-            }catch(err){
+            } catch (err) {
                 console.log("Error during login:", err);
-                setErrors({message: err.status === 401 ? "Please log in via Google" : "Login failed. Please try again."});
+                setErrors({ message: err.status === 401 ? "Please log in via Google" : "Login failed. Please try again." });
             }
-        }else{
+        } else {
             console.log("Invalid form");
         }
     }
 
     const handleGoogleSuccess = async (authResponse) => {
-        try{
+        try {
             const body = {
                 idToken: authResponse?.credential
             };
-            const resp = await axios.post(`${serverEndpoint}/auth/google-auth`, body, {withCredentials: true});
-            dispatch({type: SET_USER, payload: resp.data.user});
-        }catch(err){
+            const resp = await axios.post(`${serverEndpoint}/auth/google-auth`, body, { withCredentials: true });
+            dispatch({ type: SET_USER, payload: resp.data.user });
+        } catch (err) {
             console.log("Error during Google SSO login:", err);
-            setErrors({message: "Google SSO login failed. Please try again."});
+            setErrors({ message: "Google SSO login failed. Please try again." });
         }
     }
 
     const handleGoogleError = (error) => {
         console.log(error);
-        setErrors({message: "Something went wrong while performing google single sign-on"});
-    } 
+        setErrors({ message: "Something went wrong while performing google single sign-on" });
+    }
 
     return (
         <div className="container">
             <h3 className="text-center">Login Page</h3>
             {message && (message)}
             {errors.message && (errors.message)}
-            <div className="row justify-content-center"> 
+            <div className="row justify-content-center">
                 <div className="col-6">
                     <form onSubmit={handleFormSubmit}>
-                        
+
                         <label>Email</label>
-                        <input name="email" type="email" placeholder="Email" className="form-control mb-2" 
-                        onChange={handleChange} value={formdata.email} required={true} />
+                        <input name="email" type="email" placeholder="Email" className="form-control mb-2"
+                            onChange={handleChange} value={formdata.email} required={true} />
                         {errors.email && (errors.email)}
                         <br />
 
                         <label>Password</label>
-                        <input name="password" type="password" placeholder="Password" className="form-control mb-2" 
-                        onChange={handleChange} value={formdata.password} required={true} /> 
+                        <input name="password" type="password" placeholder="Password" className="form-control mb-2"
+                            onChange={handleChange} value={formdata.password} required={true} />
                         {errors.password && (errors.password)}
                         <Link to='/reset-password' className='row justify-content-start'>Forgot Password?</Link>
                         <br />
-                        
+
                         <button className="btn btn-primary w-100" type="submit">Login</button>
                     </form>
                 </div>

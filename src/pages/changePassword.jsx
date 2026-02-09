@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function ChangePassword(){
+function ChangePassword() {
     const navigate = useNavigate();
     const handleChangePassword = async (event) => {
         event.preventDefault();
-        try{ 
+        try {
             const body = {
                 email: event.target.email.value,
                 newPassword: event.target.newPassword.value,
                 otp: event.target.otp.value
             };
-            const resp = await axios.post('http://localhost:5001/auth/change-password', body, {withCredentials: true});
+            const resp = await axios.post('http://localhost:5001/auth/change-password', body, { withCredentials: true });
             console.log(resp);
             console.log("Password changed successfully.");
             navigate('/login');
@@ -36,7 +36,7 @@ function ChangePassword(){
                         <label >OTP</label>
                         <input type="text" name="otp" className="form-control" required={true} />
                         <br />
-                        
+
                         <button type="submit" className="btn btn-primary w-100">Change Password</button>
                     </form>
                 </div>

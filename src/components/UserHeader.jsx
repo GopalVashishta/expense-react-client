@@ -6,15 +6,15 @@ function UserHeader() {
     const location = useLocation();
     const isActive = (path) => {
         location.pathname === path ?
-        "active fw-bold text-primary":
-        "text-secondary";
+            "active fw-bold text-primary" :
+            "text-secondary";
     }
     return (
         <nav className="navbar navbar-expand-lg bg-dark border-bottom shadow-sm py-2"
-        data-bs-theme="dark">
+            data-bs-theme="dark">
             <div className="container">
-                <Link  className="navbar-brand fw-bold fs-4 d-flex align-items-center" to='/dashboard'>
-                    Dashboard 
+                <Link className="navbar-brand fw-bold fs-4 d-flex align-items-center" to='/dashboard'>
+                    Dashboard
                 </Link>
                 <button
                     className="navbar-toggler border-0 shadow-none"
@@ -35,7 +35,7 @@ function UserHeader() {
                         </Link>
                     </li>
                 </ul>
-                
+
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item dropdown">
@@ -46,7 +46,7 @@ function UserHeader() {
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                {user ? user.name: <>Account</>}
+                                {user ? user.name : <>Account</>}
                             </Link>
                             <ul className="dropdown-menu dropdown-menu-end">
                                 <li>

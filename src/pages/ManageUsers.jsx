@@ -8,45 +8,45 @@ function ManageUsers() {
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState([]);
     const [formData, setFormData] = useState({
-        name: "", email: "", role:"Select"
+        name: "", email: "", role: "Select"
     });
     const [message, setMessage] = useState(null);
     const [actionLoading, setActionLoading] = useState(false);
 
     const fetchUsers = async () => {
-        try{
-            const resp = await axios.get(`${serverEndpoint}/users/`, {withCredentials: true});
+        try {
+            const resp = await axios.get(`${serverEndpoint}/users/`, { withCredentials: true });
             setUsers(resp.data.users);
         }
-        catch(error){
+        catch (error) {
             console.log(error);
             setErrors({ message: "Failed to fetch users" });
         }
-        finally{
+        finally {
             setLoading(false);
         }
     }
-    useEffect(() => {fetchUsers();}, []);
+    useEffect(() => { fetchUsers(); }, []);
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setFormData({
             ...FormData,
-            [name]:value
+            [name]: value
         });
     };
-    const validate= () => {
+    const validate = () => {
         let isValid = true;
         let newErrors = {};
-        if(formData.name.length === 0){
+        if (formData.name.length === 0) {
             isValid = false;
             newErrors.name = "Name is required";
         }
-        if(formData.email.length === 0){
+        if (formData.email.length === 0) {
             isValid = false;
             newErrors.email = "Email is required";
         }
-        if(formData.role.length === 'Select'){
+        if (formData.role.length === 'Select') {
             isValid = false;
             newErrors.role = "Role is required";
         }
@@ -55,27 +55,28 @@ function ManageUsers() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-       
-        if(validate()){  setActionLoading(true);
-            try{
+
+        if (validate()) {
+            setActionLoading(true);
+            try {
                 const resp = await axios.post(`${serverEndpoint}/users/`,
-                    {name: formData.name, email: formData.email, role: formData.role},
-                    {withCredentials: true}
+                    { name: formData.name, email: formData.email, role: formData.role },
+                    { withCredentials: true }
                 );
                 setUsers([
                     ...users,
                     resp.data.user
                 ]);
                 setMessage("User added!");
-            }catch(error){
+            } catch (error) {
                 console.log(error);
-                setErrors({message: "Unale to add user, please try again."});
-            }finally{
+                setErrors({ message: "Unale to add user, please try again." });
+            } finally {
                 setActionLoading(false);
             }
         }
     }
-    if(loading){
+    if (loading) {
         return (
             <div className='container p-5'>
                 <div className='spinner-border' role='status'>
@@ -87,13 +88,13 @@ function ManageUsers() {
     return (
         <div className='container py-5 px-4  px-md-5'>
             <div className='col-md-8 text-center text-md-start mb-3 mb-md-0'>
-                <h2 className="fw-bold text-dark display-6">Manage <span className='text-primary' >Users</span></h2> 
-                
+                <h2 className="fw-bold text-dark display-6">Manage <span className='text-primary' >Users</span></h2>
+
                 <p className='text-muted mb-0'>
                     View and manage all the users along with their permissions
                 </p>
             </div>
-            
+
             {errors.message && <div className="alert alert-danger" role="alert">{errors.message}</div>}
             {message && <div className="alert alert-success" role="alert">{message}</div>}
             <div className='row'>
@@ -108,17 +109,17 @@ function ManageUsers() {
                                 <form onSubmit={handleSubmit}>
                                     <div className='mb-3'>
                                         <label className='form-label'>Name</label>
-                                        <input type="text" name="name" className={errors.name ? 'form-control is-invalid': 'form-control'}
-                                        value={formData.name} onChange={handleChange} />
+                                        <input type="text" name="name" className={errors.name ? 'form-control is-invalid' : 'form-control'}
+                                            value={formData.name} onChange={handleChange} />
                                     </div>
                                     <div className='mb-3'>
                                         <label className='form-label'>Email</label>
-                                        <input type="text" name="email" className={errors.email ? 'form-control is-invalid': 'form-control'}
-                                        value={formData.email}  onChange={handleChange}/>
+                                        <input type="text" name="email" className={errors.email ? 'form-control is-invalid' : 'form-control'}
+                                            value={formData.email} onChange={handleChange} />
                                     </div>
                                     <div>
                                         <label className='form-label'>Role</label>
-                                        <select name='role' onChange={handleChange} className={errors.role ? 'form-select is-invalid':'form-select'} value={formData.role}>
+                                        <select name='role' onChange={handleChange} className={errors.role ? 'form-select is-invalid' : 'form-select'} value={formData.role}>
                                             <option value='Select'>Select</option>
                                             <option value='Manager'>Manager</option>
                                             <option value='Viewer'>Viewer</option>
@@ -160,7 +161,7 @@ function ManageUsers() {
                                             </tr>
                                         )}
 
-                                        {users.length  > 0 && (
+                                        {users.length > 0 && (
                                             users.map((user) => (
                                                 <tr key={user._id}>
                                                     <td className='align-middle'>{user.name}</td>

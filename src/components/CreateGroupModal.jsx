@@ -1,7 +1,7 @@
 import axios from "axios";
 import { serverEndpoint } from "../config/appConfig";
 import { useState } from "react";
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
     const user = useSelector((state) => state.userDetails);
@@ -12,11 +12,11 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
     const validate = () => {
         let isValid = true;
         const newErrors = {};
-        if(formdata.name.length < 3){
+        if (formdata.name.length < 3) {
             newErrors.name = "Name must be at least 3 characters long";
             isValid = false;
         }
-        if(formdata.description.length < 3){
+        if (formdata.description.length < 3) {
             newErrors.description = "Description must be at least 3 characters long";
             isValid = false;
         }
@@ -30,15 +30,15 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
             ...prev,
             [name]: value
         }));
-        if(errors[e.target.name]){
+        if (errors[e.target.name]) {
             setErrors({ ...errors, [e.target.name]: null });
         }
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(validate()){
+        if (validate()) {
             setLoading(true);
-            try{
+            try {
                 const resp = await axios.post(`${serverEndpoint}/group/create`, {
                     name: formdata.name,
                     description: formdata.description,
@@ -62,12 +62,12 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
                     thumbnail: "",
                     isPaid: false
                 });
-                setFormdata({name: "", description:""});
+                setFormdata({ name: "", description: "" });
                 onHide();
-            }catch(error){
+            } catch (error) {
                 console.log("Error creating group:", error);
-                setErrors({message: "Failed to create group. Please try again."});
-            }finally{
+                setErrors({ message: "Failed to create group. Please try again." });
+            } finally {
                 setLoading(false);
             }
         }
@@ -81,16 +81,17 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
                 tabIndex="-1"
                 style={{
                     backgroundColor: "rgba(15, 23, 42, 0.6)",
-                    backdropFilter: "blur(4px)",}}
-                >
+                    backdropFilter: "blur(4px)",
+                }}
+            >
 
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content border-0 rounded-4 shadow-lg p-3">
                         <form onSubmit={handleSubmit}>
                             <div className="modal-header border-0 pb-0">
-                                 <div className="bg-primary bg-opacity-10 p-2 rounded-3 me-3">
-                                     <i className="bi bi-plus-circle-fill text-primary fs-4"></i>
-                                 </div>
+                                <div className="bg-primary bg-opacity-10 p-2 rounded-3 me-3">
+                                    <i className="bi bi-plus-circle-fill text-primary fs-4"></i>
+                                </div>
                                 <h5>Start a new Circle</h5>
                                 <button type='button' className='btn-close shadow-none' onClick={onHide}></button>
                             </div>
@@ -100,8 +101,8 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
                                     Create a shared space to manage bills with your
                                     friends, roommates, or travel partners.
                                 </p>
-                                {errors.message && ( <div className="alert alert-danger py-2 small border-0 
-mb-3">  {errors.message}  </div>  )}
+                                {errors.message && (<div className="alert alert-danger py-2 small border-0 
+mb-3">  {errors.message}  </div>)}
 
                                 <div className="mb-4">
                                     <label className="form-label small fw-bold text-secondary
@@ -119,8 +120,8 @@ border-0 fs-6 ${errors.name ? "is-invalid" : ""}`} />
                                     <label className="form-label small fw-bold text-secondary
 text-uppercase mb-2">Description</label>
                                     <textarea name="description" value={formdata.description} onChange={onChange} className={`form-control form-control-lg bg-light
-border-0 fs-6 ${ errors.description ? "is-invalid" : ""}`}
- rows="3" placeholder="What is this group for?"></textarea>
+border-0 fs-6 ${errors.description ? "is-invalid" : ""}`}
+                                        rows="3" placeholder="What is this group for?"></textarea>
                                 </div>
                                 {errors.description && (
                                     <div className="invalid-feedback ps-1" >
@@ -133,10 +134,10 @@ border-0 fs-6 ${ errors.description ? "is-invalid" : ""}`}
                                 <button type="button" className="btn btn-light rounded-pill  px-4 fw-medium" onClick={onHide} disabled={loading}>Cancel</button>
 
                                 <button type="submit" className="btn btn-primary rounded-pill px-5 fw-bold
-shadow-sm" disabled={loading}>{loading ? ( <>
-                                            <span className="spinner-border spinner-border-sm
-me-2" role="status" aria-hidden="true" ></span> Creating... </> ) : ( "Create Group" )}
-</button>
+shadow-sm" disabled={loading}>{loading ? (<>
+                                        <span className="spinner-border spinner-border-sm
+me-2" role="status" aria-hidden="true" ></span> Creating... </>) : ("Create Group")}
+                                </button>
                             </div>
                         </form>
                     </div>

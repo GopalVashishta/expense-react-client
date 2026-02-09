@@ -2,7 +2,7 @@ import { SET_USER, CLEAR_USER } from "./action";
 //Gets called everytime dispatch is called 
 // Irrespective of the action and payload
 export const userReducer = (state = null, action) => {
-    switch(action.type){
+    switch (action.type) {
         //This case helps in login functionality
         case SET_USER:
             return action.payload; // new value

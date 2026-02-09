@@ -69,7 +69,7 @@ function App() {
          </AppLayout>} />
 
       <Route path="/login" element={userDetails ? (
-        <Navigate to='/dashboard' />
+        <Navigate to='/' /> //dashboard
       ) : (
         <AppLayout>
           <Login />

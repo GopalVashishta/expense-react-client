@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { serverEndpoint } from '../config/appConfig';
 import axios from 'axios';
-import Can from './components/Can';
+import Can from '../components/Can';
 
 function ManageUsers() {
     const [errors, setErrors] = useState({});

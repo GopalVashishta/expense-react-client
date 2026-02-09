@@ -3,7 +3,7 @@ import {serverEndpoint} from '../config/appConfig';
 import { useEffect, useState } from 'react';
 import GroupCard from '../components/GroupCard';
 import CreateGroupModal from '../components/CreateGroupModal';
-import { usePermissions } from '../rbac/PermissionContext';
+import { usePermissions } from '../rbac/userPermissions';
 
 function Groups(){
     const [groups, setGroups] = useState([]);

@@ -1,17 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function UserHeader() {
     const user = useSelector((state) => state.userDetails);
+    const location = useLocation();
+    const isActive = (path) => {
+        location.pathname === path ?
+        "active fw-bold text-primary":
+        "text-secondary";
+    }
     return (
-        <nav className="navbar navbar-expand-lg bg-dark border-bottom border-body"
+        <nav className="navbar navbar-expand-lg bg-dark border-bottom shadow-sm py-2"
         data-bs-theme="dark">
             <div className="container">
-                <Link className='navbar-brand' to='/'>
+                <Link  className="navbar-brand fw-bold fs-4 d-flex align-items-center" to='/dashboard'>
                     Dashboard 
                 </Link>
                 <button
-                    className="navbar-toggler"
+                    className="navbar-toggler border-0 shadow-none"
                     type='button'
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"

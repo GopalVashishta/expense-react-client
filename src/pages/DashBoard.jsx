@@ -4,6 +4,7 @@ function DashBoard() {
     return (
         <div className='container text-center'>
             <h4>Welcome, {user.name}</h4>
+            <p>This is your dashboard where u can dash the board with the help of dashboard.</p>
         </div>
     );
 }

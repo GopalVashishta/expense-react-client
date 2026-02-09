@@ -88,6 +88,9 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
                     <div className="modal-content border-0 rounded-4 shadow-lg p-3">
                         <form onSubmit={handleSubmit}>
                             <div className="modal-header border-0 pb-0">
+                                 <div className="bg-primary bg-opacity-10 p-2 rounded-3 me-3">
+                                     <i className="bi bi-plus-circle-fill text-primary fs-4"></i>
+                                 </div>
                                 <h5>Start a new Circle</h5>
                                 <button type='button' className='btn-close shadow-none' onClick={onHide}></button>
                             </div>
@@ -97,6 +100,8 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
                                     Create a shared space to manage bills with your
                                     friends, roommates, or travel partners.
                                 </p>
+                                {errors.message && ( <div className="alert alert-danger py-2 small border-0 
+mb-3">  {errors.message}  </div>  )}
 
                                 <div className="mb-4">
                                     <label className="form-label small fw-bold text-secondary
@@ -115,7 +120,7 @@ border-0 fs-6 ${errors.name ? "is-invalid" : ""}`} />
 text-uppercase mb-2">Description</label>
                                     <textarea name="description" value={formdata.description} onChange={onChange} className={`form-control form-control-lg bg-light
 border-0 fs-6 ${ errors.description ? "is-invalid" : ""}`}
- rows="3"></textarea>
+ rows="3" placeholder="What is this group for?"></textarea>
                                 </div>
                                 {errors.description && (
                                     <div className="invalid-feedback ps-1" >

@@ -23,7 +23,6 @@ function ManagePayments() {
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState([]);
     const [userProfile, setUserProfile] = useState(null);
-    const [selectedCredits, setSelectedCredits] = useState(null);
 
     const getUserProfile = async () => {
         try {
@@ -41,29 +40,30 @@ function ManagePayments() {
     useEffect(() => {
         getUserProfile();
     }, []);
-    
-    const paymentResponseHandler = async (payment) => {
-        try{
+
+    const paymentResponseHandler = async (credits, payment) => {
+        try {
             const resp = await axios.post(
                 `${serverEndpoint}/payments/verify-order`,
                 {
                     razorpay_payment_id: payment.razorpay_payment_id,
                     razorpay_order_id: payment.razorpay_order_id,
                     razorpay_signature: payment.razorpay_signature,
-                    credits: selectedCredits
+                    credits: credits
                 },
                 { withCredentials: true }
             );
             setUserProfile(resp.data.user);
+            setMessage({ message: `Payment success, ${credits} are credited to your account` });
         }
-        catch(error){
+        catch (error) {
             console.log(error);
-            setErrors({message: "Unable to process payment request, contact customer service"});
+            setErrors({ message: "Unable to process payment request, contact customer service" });
         }
     };
-    
+
     const handlePayment = async (credits) => {
-        try{
+        try {
             setLoading(true);
             const orderResponse = await axios.post(
                 `${serverEndpoint}/payments/create-order`,
@@ -71,7 +71,6 @@ function ManagePayments() {
                 { withCredentials: true }
             );
             const order = orderResponse.data.order;
-            setSelectedCredits(credits);
             const options = {
                 key: process.env.VITE_RAZORPAY_KEY_ID,
                 amount: order.amount,
@@ -82,19 +81,19 @@ function ManagePayments() {
                 theme: {
                     color: '#3399cc'
                 },
-                handler: paymentResponseHandler,
+                handler: (resp) => { paymentResponseHandler(credits, resp) },
             };
             const razorpay = new window.Razorpay(options);
             razorpay.open();
         }
-        catch(error){
+        catch (error) {
             console.log(error);
-            setErrors({message: "Unable to process payment request."});
-        }finally{
+            setErrors({ message: "Unable to process payment request." });
+        } finally {
             setLoading(false);
         }
     };
-    
+
     if (loading) {
         return (
             <div className="container p-5 text-center">
@@ -114,6 +113,12 @@ function ManagePayments() {
                     </div>
                 )}
 
+                {message && (
+                    <div className='alert alert-success' role='alert'>
+                        {message}
+                    </div>
+                )}
+
                 <h2>Manage Payments</h2>
                 <p><strong>Current Credit Balance:</strong> {userProfile.credits || 0} </p>
 
@@ -121,8 +126,8 @@ function ManagePayments() {
                     <div key={index} className='col-auto border m-2 p-2'>
                         <h4>{credit.credits} Credits</h4>
                         <p>Buy {credit.credits} credits for ${credit.price}</p>
-                        <button className='btn btn-outline-primary' 
-                            onClick={() => {handlePayment(credit.credits)}}>
+                        <button className='btn btn-outline-primary'
+                            onClick={() => { handlePayment(credit.credits) }}>
                             Buy Now
                         </button>
                     </div>

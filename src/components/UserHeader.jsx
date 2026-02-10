@@ -54,6 +54,13 @@ function UserHeader() {
                                         Manage Users
                                     </Link>
                                 </li>
+
+                                <li>
+                                    <Link className="dropdown-item" to="/manage-payments">
+                                        Payments & Subscriptions
+                                    </Link>
+                                </li>
+
                                 <li>
                                     <Link className="dropdown-item" to="/logout">
                                         Logout

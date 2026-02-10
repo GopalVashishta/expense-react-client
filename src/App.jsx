@@ -12,6 +12,7 @@ import Groups from './pages/Groups.jsx';
 import GroupExpenses from './pages/GroupExpenses.jsx';
 import ManageUsers from './pages/ManageUsers.jsx';
 import ProtectedRoute from './rbac/ProtectedRoute';
+import ManagePayments from './pages/managePayments.jsx';
 import UnauthorizedAccess from './components/errors/UnauthorizedAccess';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -54,6 +55,7 @@ function App() {
   }
   return (
     <Routes>
+
       <Route path="/" element={userDetails ? (
         <UserLayout user={userDetails}>
           <Dashboard user={userDetails} />
@@ -75,6 +77,7 @@ function App() {
           <Login />
         </AppLayout>)
       } />
+
       <Route path="/groups" element={userDetails ? (
         <UserLayout>
           <Groups />
@@ -83,17 +86,33 @@ function App() {
         <Navigate to='/login' />
       )
       } />
+
       <Route path='/reset-password' element={
         <AppLayout>
           <ResetPassword />
         </AppLayout>} />
+        
       <Route path='/change-password' element={
         <AppLayout>
           <ChangePassword />
         </AppLayout>} />
+      
+      <Route path='/manage-payments' element={
+        userDetails ? (
+          <ProtectedRoute roles={['admin']}>
+            <UserLayout>
+              <ManagePayments />
+            </UserLayout>
+          </ProtectedRoute>
+        ) : (
+          <Navigate to='/login' />
+        )
+      } />
+      
       <Route path='/logout' element={
         userDetails ? <Logout /> : <Navigate to="/login" />
       } />
+
       <Route path='/groups/:groupId' element={userDetails ? (
         <UserLayout>
           <GroupExpenses />
@@ -102,6 +121,7 @@ function App() {
         <Navigate to='/login' />
       )
       } />
+
       <Route path='/manage-users' element={
         userDetails ? (
           <ProtectedRoute roles={['admin']}>
@@ -113,6 +133,7 @@ function App() {
           <Navigate to='/login' />
         )
       } />
+
       <Route path='/unauthorized-access' elements={
         userDetails ? (
           <UserLayout>
@@ -123,6 +144,7 @@ function App() {
             <UnauthorizedAccess />
           </AppLayout>)
       } />
+
     </Routes>
   );
 }

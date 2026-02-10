@@ -111,7 +111,7 @@ function GroupCard({ group, onUpdate }){
                                             {member.charAt(0).toUpperCase()}
                                         </div>
                                         <span  className="small text-dark text-truncate" title={member}>
-                                            {member}
+                                            {member} <button className="btn btn-sm text-primary p-0 text-start fw-medium mb-1" onClick={() => handleRemoveMember(group._id, member)}>Remove</button>
                                         </span>
                                         {/*{index+1}. {member} <button className="btn btn-sm btn-link p-0" onClick={() => handleRemoveMember(group._id, member)}>Remove</button> */}
                                     </div>

@@ -15,10 +15,11 @@ function Groups() {
     const [totalPages, setTotalPages] = useState(1);
     const [limit, setLimit] = useState(10);
     const pageSizeOptions = [5, 10, 20, 50, 100];
+    const [sortBy, setSortBy] = useState('newest');
 
     const fetchGroups = async (page = 1) => {
         try {
-            const resp = await axios.get(`${serverEndpoint}/group/my-group?page=${page}&limit=${limit}`, { withCredentials: true });
+            const resp = await axios.get(`${serverEndpoint}/group/my-group?page=${page}&limit=${limit}&sortBy=${sortBy}`, { withCredentials: true });
             setGroups(resp?.data?.groups); // ? makes null safe
             setTotalPages(resp?.data?.pagination?.totalPages);
             setCurrentPage(resp?.data?.pagination?.currentPage);
@@ -42,7 +43,7 @@ function Groups() {
     }
     // Triggers call to fetch when the compoenent is rendered for the very 1st time 
     // and also when there is change in currentPage or limit variable
-    useEffect(() => { fetchGroups(currentPage); }, [currentPage, limit]);
+    useEffect(() => { fetchGroups(currentPage); }, [currentPage, limit, sortBy]);
 
     const handlePageSizeChange = (e) => {
         setLimit(Number(e.target.value));
@@ -78,12 +79,25 @@ function Groups() {
                             expenses in one click.
                         </p>
                     </div>
-                    <div className="col-md-4 text-center text-md-end">
-                        <button className="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" onClick={() => setShow(true)}>
-                            <i className="bi bi-plus-lg me-2"></i>
-                            New Group
-                        </button>
-                    </div>
+                    {permissions.canCreateGroups && (
+                        <div className="col-md-4 text-center text-md-end">
+                            <div className='d-flex align-items-center w-sm-auto'>
+                                <label >Sort:</label>
+                                <select className='form-select form-select-sm rounded-pill me-2'
+                                    value={sortBy}
+                                    onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1) }}>
+
+                                    <option value='newest'>Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+
+                                <button className="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" onClick={() => setShow(true)}>
+                                    <i className="bi bi-plus-lg me-2"></i>
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 {/*}
                 <div className="d-flex justify-content-between align-items-center mb-4">

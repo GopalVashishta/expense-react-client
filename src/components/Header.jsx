@@ -6,7 +6,7 @@ function Header() {
         <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom border-body">
             <div className="container">
                 <Link className="navbar-brand d-flex align-items-center fw-bold fs-3 text dark" to="/">
-                    <span className="text-primary">Merge</span>Money
+                    <span className="text-primary">Expense</span>App
                 </Link>
                 <button
                     className="navbar-toggler border-0"

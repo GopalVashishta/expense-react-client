@@ -78,47 +78,58 @@ function Login() {
     }
 
     return (
-        <div className="container">
-            <h3 className="text-center">Login Page</h3>
+        <div className="container py-5">
+            <h3 className="display-6 fw-bold mb-4 text-center">Login Here</h3>
             {message && (message)}
             {errors.message && (errors.message)}
             <div className="row justify-content-center">
                 <div className="col-6">
                     <form onSubmit={handleFormSubmit}>
+                        <div className='mb-3'>
+                            <label className="form-label small fw-bold text-secondary" >Email Address</label>
+                            <input name="email" type="email" placeholder="name@example.com" className={`form-control form-control-lg rounded-3 fs-6 ${errors.email ? "is-invalid" : ""}`}
+                                onChange={handleChange} value={formdata.email} required={true} />
 
-                        <label>Email</label>
-                        <input name="email" type="email" placeholder="Email" className="form-control mb-2"
-                            onChange={handleChange} value={formdata.email} required={true} />
-                        {errors.email && (errors.email)}
-                        <br />
+                            {errors.email && (<div className="invalid-feedback">{errors.email}</div>)}
+                        </div>
 
-                        <label>Password</label>
-                        <input name="password" type="password" placeholder="Password" className="form-control mb-2"
-                            onChange={handleChange} value={formdata.password} required={true} />
-                        {errors.password && (errors.password)}
-                        <Link to='/reset-password' className='row justify-content-start'>Forgot Password?</Link>
-                        <br />
-
-                        <button className="btn btn-primary w-100" type="submit">Login</button>
+                        <div className="mb-4">
+                            <label className="form-label small fw-bold text-secondary">Password</label>
+                            <input name="password" type="password" placeholder="Password" className={`form-control form-control-lg rounded-3 fs-6 ${errors.password ? "is-invalid" : ""}`}
+                                onChange={handleChange} value={formdata.password} required={true} />
+                            {errors.password && (<div className="invalid-feedback">{errors.password}</div>)}
+                            <Link to='/reset-password' className='row justify-content-start'>Forgot Password?</Link>
+                            <br />
+                        </div>
+                        <div className="d-flex justify-content-center">
+                            <button className="btn btn-primary w-100 btn-md rounded-pill fw-bold shadow-sm mb-4" type="submit">Login</button>
+                        </div>
                     </form>
                 </div>
+                
+                <div className="row justify-content-center">
+                    <div className="col-6">
+                        <p>Don't have an account? <Link to="/register">Register here</Link></p>
+                    </div>
+                </div>
+            </div >
+
+            {/* Divider */}
+            <div className="d-flex align-items-center my-2">
+                <hr className="flex-grow-1 text-muted" />
+                <span className="mx-3 text-muted small fw-bold">OR</span>
+                <hr className="flex-grow-1 text-muted" />
             </div>
-            <br />
-            <div className="row justify-content-center">
-                <div className="col-6">
+
+            <div className="row justify-content-center w-100">
+                <div className="col-5">
                     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> {/* Like BrowserRouter in main.jsx */}
-                        <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} />
+                        <GoogleLogin onSuccess={handleGoogleSuccess} onError={handleGoogleError} theme='outline' shape='pill' text='signin_with' />
                     </GoogleOAuthProvider>
                 </div>
             </div>
 
-            <div className="row justify-content-center">
-                <div className="col-6">
-                    <p>Don't have an account? <Link to="/register">Register here</Link></p>
-                </div>
-            </div>
-
-        </div>
+        </div >
     );
 }
 export default Login;

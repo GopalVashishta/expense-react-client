@@ -94,7 +94,7 @@ function Home() {
 
                 <section id="features" className="container py-5">
                     <div className="text-center mb-5">
-                        <h2 className="fw-bold h1">Why MergeMoney is Different</h2>
+                        <h2 className="fw-bold h1">Why ExpenseApp is Different</h2>
                         <p
                             className="text-muted mx-auto"
                             style={{ maxWidth: "600px" }}

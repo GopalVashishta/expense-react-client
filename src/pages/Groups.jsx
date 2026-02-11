@@ -175,7 +175,7 @@ function Groups() {
                                 className='form-select form-select-sm'
                                 style={{ width: 'auto' }}
                                 value={limit}
-                                onChange={() => { handlePageSizeChange }}
+                                onChange={handlePageSizeChange}
                             >
                                 {pageSizeOptions.map((size) => (
                                     <option key={size} value={size}>

@@ -12,11 +12,13 @@ function ManageUsers() {
     });
     const [message, setMessage] = useState(null);
     const [actionLoading, setActionLoading] = useState(false);
+    const [editUser, setEditUser] = useState(null);
+    const [editFormData, setEditFormData] = useState({ name: "", role: "Select" });
 
     const fetchUsers = async () => {
         try {
             const resp = await axios.get(`${serverEndpoint}/users/`, { withCredentials: true });
-            setUsers(resp.data.users);
+            setUsers(resp.data.users || []);
         }
         catch (error) {
             console.log(error);
@@ -25,16 +27,18 @@ function ManageUsers() {
         finally {
             setLoading(false);
         }
-    }
+    };
+
     useEffect(() => { fetchUsers(); }, []);
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setFormData({
-            ...FormData,
+            ...formData,
             [name]: value
         });
     };
+
     const validate = () => {
         let isValid = true;
         let newErrors = {};
@@ -46,13 +50,14 @@ function ManageUsers() {
             isValid = false;
             newErrors.email = "Email is required";
         }
-        if (formData.role.length === 'Select') {
+        if (formData.role === 'Select') {
             isValid = false;
             newErrors.role = "Role is required";
         }
         setErrors(newErrors);
         return isValid;
-    }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -70,12 +75,63 @@ function ManageUsers() {
                 setMessage("User added!");
             } catch (error) {
                 console.log(error);
-                setErrors({ message: "Unale to add user, please try again." });
+                setErrors({ message: "Unable to add user, please try again." });
             } finally {
                 setActionLoading(false);
             }
         }
-    }
+    };
+
+    const handleEdit = (user) => {
+        setEditUser(user);
+        setEditFormData({ name: user.name, role: user.role.charAt(0).toUpperCase() + user.role.slice(1) });
+    };
+
+    const handleEditChange = (e) => {
+        setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        if (editFormData.role === 'Select') {
+            setErrors({ message: "Please select a role" });
+            return;
+        }
+        setActionLoading(true);
+        try {
+            const resp = await axios.patch(`${serverEndpoint}/users/`,
+                { userId: editUser._id, name: editFormData.name, role: editFormData.role },
+                { withCredentials: true }
+            );
+            setUsers(users.map(u => u._id === editUser._id ? resp.data.user : u));
+            setMessage("User updated!");
+            setEditUser(null);
+        } catch (error) {
+            console.log(error);
+            setErrors({ message: "Unable to update user, please try again." });
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const handleDelete = async (userId) => {
+        if (!window.confirm("Are you sure you want to delete this user?")) return;
+        setActionLoading(true);
+        try {
+            await axios.post(`${serverEndpoint}/users/delete`,
+                { userId },
+                { withCredentials: true }
+            );
+            setUsers(users.filter(u => u._id !== userId));
+            setMessage("User deleted!");
+        } catch (error) {
+            console.log(error);
+            setErrors({ message: "Unable to delete user, please try again." });
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
     if (loading) {
         return (
             <div className='container p-5'>
@@ -85,6 +141,7 @@ function ManageUsers() {
             </div>
         );
     }
+
     return (
         <div className='container py-5 px-4  px-md-5'>
             <div className='col-md-8 text-center text-md-start mb-3 mb-md-0'>
@@ -99,7 +156,7 @@ function ManageUsers() {
             {message && <div className="alert alert-success" role="alert">{message}</div>}
             <div className='row'>
                 <Can requiredPermission="canCreateUsers">
-                    <div className='col md-3'>
+                    <div className='col-md-3'>
                         <div className='card shadow-sm'>
                             <div className='card-header'>
                                 <h5>Add Members</h5>
@@ -168,10 +225,10 @@ function ManageUsers() {
                                                     <td className='align-middle'>{user.email}</td>
                                                     <td className='align-middle'>{user.role}</td>
                                                     <td className='align-middle'>
-                                                        <button className='btn btn-link text-primary'>
+                                                        <button className='btn btn-link text-primary' onClick={() => handleEdit(user)}>
                                                             Edit
                                                         </button>
-                                                        <button className='btn btn-link text-danger'>
+                                                        <button className='btn btn-link text-danger' onClick={() => handleDelete(user._id)}>
                                                             Delete
                                                         </button>
                                                     </td>
@@ -186,6 +243,38 @@ function ManageUsers() {
                 </div>
             </div>
 
+            {editUser && (
+                <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <form onSubmit={handleEditSubmit}>
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Edit User</h5>
+                                    <button type="button" className="btn-close" onClick={() => setEditUser(null)}></button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="mb-3">
+                                        <label className="form-label">Name</label>
+                                        <input type="text" name="name" className="form-control" value={editFormData.name} onChange={handleEditChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Role</label>
+                                        <select name="role" className="form-select" value={editFormData.role} onChange={handleEditChange}>
+                                            <option value="Select">Select</option>
+                                            <option value="Manager">Manager</option>
+                                            <option value="Viewer">Viewer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" onClick={() => setEditUser(null)}>Cancel</button>
+                                    <button type="submit" className="btn btn-primary" disabled={actionLoading}>Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

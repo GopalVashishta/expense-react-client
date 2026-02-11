@@ -10,6 +10,11 @@ export const ROLE_PERMISSIONS = {
         canUpdateGroups: true,
         canDeleteGroups: true,
         canViewGroups: true,
+        canCreateExpenses: true,
+        canViewExpenses: true,
+        canUpdateExpenses: true,
+        canDeleteExpenses: true,
+        canSettleExpenses: true,
     },
     viewer: {
         canCreateUsers: false,
@@ -20,6 +25,11 @@ export const ROLE_PERMISSIONS = {
         canUpdateGroups: false,
         canDeleteGroups: false,
         canViewGroups: true,
+        canCreateExpenses: false,
+        canViewExpenses: true,
+        canUpdateExpenses: false,
+        canDeleteExpenses: false,
+        canSettleExpenses: false,
     },
     manager: {
         canCreateUsers: false,
@@ -30,6 +40,11 @@ export const ROLE_PERMISSIONS = {
         canUpdateGroups: true,
         canDeleteGroups: false,
         canViewGroups: true,
+        canCreateExpenses: true,
+        canViewExpenses: true,
+        canUpdateExpenses: true,
+        canDeleteExpenses: true,
+        canSettleExpenses: true,
     }
 };
 export const usePermissions = () => {

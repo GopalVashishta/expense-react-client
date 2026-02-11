@@ -66,7 +66,8 @@ function CreateGroupModal({ show, onHide, onSuccess }) { // Create Group
                 onHide();
             } catch (error) {
                 console.log("Error creating group:", error);
-                setErrors({ message: "Failed to create group. Please try again." });
+                const errorMessage = error.response?.data?.message || "Failed to create group. Please try again.";
+                setErrors({ message: errorMessage });
             } finally {
                 setLoading(false);
             }

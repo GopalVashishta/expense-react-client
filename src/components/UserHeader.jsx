@@ -74,7 +74,13 @@ function UserHeader() {
 
                                 <li>
                                     <Link className="dropdown-item" to="/manage-payments">
-                                        Payments & Subscriptions
+                                        Manage Credits
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link className="dropdown-item" to="/manage-subscriptions">
+                                        Manage Subscriptions
                                     </Link>
                                 </li>
 

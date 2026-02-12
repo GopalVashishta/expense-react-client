@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { serverEndpoint } from './config/appConfig.js';
 import { useSelector, useDispatch } from 'react-redux';
+import ManageSubscriptions from './pages/ManageSubscriptions.jsx';
 
 function App() {
   //Value of userDetails repsersent whteher user is logged in or not
@@ -145,6 +146,17 @@ function App() {
           </AppLayout>)
       } />
 
+      <Route path='/manage-subscriptions' element={
+        userDetails ? (
+          <ProtectedRoute roles={['admin']}>
+            <UserLayout>
+              <ManageSubscriptions />
+            </UserLayout>
+          </ProtectedRoute>
+        ) : (
+          <Navigate to='/login' />
+        )
+      } />
     </Routes>
   );
 }

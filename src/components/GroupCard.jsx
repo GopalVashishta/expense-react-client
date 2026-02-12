@@ -34,13 +34,11 @@ function GroupCard({ group, onUpdate }){
         const form = e.target;
         const updatedName = form[0].value;
         const updatedDescription = form[1].value;
-        const updatedAmount = form[2].value;
         try{
             const resp = await axios.put(`${serverEndpoint}/group/update`, {
                 groupId: group._id,
                 name: updatedName,
                 description: updatedDescription,
-                amount: updatedAmount
             }, {withCredentials: true});
             onUpdate(resp.data.group);
             setShowGroupDetails(false);
@@ -95,8 +93,6 @@ function GroupCard({ group, onUpdate }){
                                 <input type="text" className="form-control form-control-sm mb-2" defaultValue={group.name} />
                                 <label className="form-label extra-small fw-bold text-secondary">Description</label>
                                 <textarea className="form-control form-control-sm mb-2" rows="3" defaultValue={group.description}></textarea>
-                                <label className="form-label extra-small fw-bold text-secondary">Amount</label>
-                                <input type="number" className="form-control form-control-sm mb-3" defaultValue={group.amount} />
                                 <button className="btn btn-sm btn-success" type="submit">Save Changes</button>
                             </form>
                         </div>

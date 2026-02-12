@@ -240,7 +240,7 @@ function GroupExpenses() {
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item">
-                        <Link to="/dashboard">Groups</Link>
+                        <Link to="/groups">Groups</Link>
                     </li>
                     <li className="breadcrumb-item active">{group?.name || "Expense Details"}</li>
                 </ol>

@@ -126,7 +126,7 @@ function ManagePayments() {
                 {CREDITS_PACK.map((credit, index) => (
                     <div key={index} className='col-auto border m-2 p-2'>
                         <h4>{credit.credits} Credits</h4>
-                        <p>Buy {credit.credits} credits for ${credit.price}</p>
+                        <p>Buy {credit.credits} credits for INR {credit.price}</p>
                         <button className='btn btn-outline-primary'
                             onClick={() => { handlePayment(credit.credits) }}>
                             Buy Now

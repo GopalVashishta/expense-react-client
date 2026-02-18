@@ -40,22 +40,23 @@ function ManageSubscriptions() {
     }, []);
 
     const rzpResponseHandler = async (resp) => {
-        try{
+        try {
             setLoading(true);
-            const captureResponse = await axios.post(`${serverEndpoint}/payments/capture-subscription`, 
-                {subscriptionId: resp.razorpay_subscription_id},
-                {wthCredentials: true}
+            const captureResponse = await axios.post(`${serverEndpoint}/payments/capture-subscription`,
+                { subscriptionId: resp.razorpay_subscription_id },
+                { wthCredentials: true }
             );
             setMessage("Subscription successful!");
             setUserProfile(captureResponse.data.user);
-        }catch(error){
+        } catch (error) {
             console.log(error);
-            setErrors({message: "Subscription successful but failed to update server. Please contact support if your subscription is not reflected in your profile."});
+            setErrors({ message: "Subscription successful but failed to update server. Please contact support if your subscription is not reflected in your profile." });
         }
-        finally{
+        finally {
             setLoading(false);
         }
     };
+
     const handleSubscribe = async (planName) => {
         try {
             setLoading(true);
@@ -73,7 +74,7 @@ function ManageSubscriptions() {
                 theme: {
                     color: "#3399cc"
                 },
-                handler: (resp) => {rzpResponseHandler(resp);}
+                handler: (resp) => { rzpResponseHandler(resp); }
 
             };
             const rzp = new window.Razorpay(options);
@@ -87,6 +88,7 @@ function ManageSubscriptions() {
             setLoading(false);
         }
     }
+
     if (loading) {
         return (
             <div className="container p-5 text-center">
@@ -96,6 +98,7 @@ function ManageSubscriptions() {
             </div>
         );
     }
+
     const showSubscriptions = [undefined, 'completed', 'cancelled'].includes(userProfile?.subscription?.status);
 
     return (

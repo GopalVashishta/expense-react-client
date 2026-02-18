@@ -35,7 +35,7 @@ function GroupExpenses() {
                 axios.get(`${serverEndpoint}/expense/group/${groupId}`, { withCredentials: true }),
                 axios.get(`${serverEndpoint}/expense/summary/${groupId}`, { withCredentials: true })
             ]);
-            
+
             setGroup(expenseResp.data.group);
             setExpenses(expenseResp.data.expenses);
             setBalances(summaryResp.data.balances);
@@ -85,7 +85,7 @@ function GroupExpenses() {
         const amount = parseFloat(expenseAmount) || 0;
         const activeMembers = group?.membersEmail?.filter(e => !excludedMembers.includes(e)) || [];
         if (activeMembers.length === 0) return {};
-        
+
         const splitAmount = amount / activeMembers.length;
         const splits = {};
         activeMembers.forEach(email => {
@@ -142,7 +142,7 @@ function GroupExpenses() {
                     isPaid: false
                 });
             }
-            
+
             if (Math.abs(total - amount) > 0.01) {
                 setFormError(`Split amounts (${total.toFixed(2)}) must equal total amount (${amount.toFixed(2)})`);
                 return;
@@ -207,10 +207,10 @@ function GroupExpenses() {
     // Format date
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-IN', { 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric' 
+        return date.toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
         });
     };
 
@@ -266,7 +266,7 @@ function GroupExpenses() {
                     </div>
                     <div className="col-md-4 text-md-end mt-3 mt-md-0">
                         {permissions.canSettleExpenses && (
-                            <button 
+                            <button
                                 className="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm"
                                 onClick={handleSettleGroup}
                             >
@@ -290,7 +290,7 @@ function GroupExpenses() {
                         <div className="overflow-auto" style={{ maxHeight: '200px' }}>
                             {group?.membersEmail?.map((member, index) => (
                                 <div key={index} className="d-flex align-items-center mb-2 p-2 bg-light rounded-3">
-                                    <div 
+                                    <div
                                         className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2 fw-bold"
                                         style={{ width: "32px", height: "32px", fontSize: "12px" }}
                                     >
@@ -344,7 +344,7 @@ function GroupExpenses() {
                     {permissions.canCreateExpenses && (
                         <div className="bg-white p-4 rounded-4 shadow-sm mb-4 border">
                             {!showAddExpense ? (
-                                <button 
+                                <button
                                     className="btn btn-primary rounded-pill px-4 py-2 fw-bold w-100"
                                     onClick={() => setShowAddExpense(true)}
                                 >
@@ -357,15 +357,15 @@ function GroupExpenses() {
                                         <i className="bi bi-receipt text-primary me-2"></i>
                                         Add New Expense
                                     </h5>
-                                    
+
                                     {formError && <div className="alert alert-danger py-2">{formError}</div>}
 
                                     <div className="row g-3">
                                         <div className="col-md-6">
                                             <label className="form-label fw-bold small">Title *</label>
-                                            <input 
-                                                type="text" 
-                                                className="form-control" 
+                                            <input
+                                                type="text"
+                                                className="form-control"
                                                 placeholder="e.g., Dinner, Movie tickets"
                                                 value={expenseTitle}
                                                 onChange={(e) => setExpenseTitle(e.target.value)}
@@ -373,9 +373,9 @@ function GroupExpenses() {
                                         </div>
                                         <div className="col-md-6">
                                             <label className="form-label fw-bold small">Amount (INR) *</label>
-                                            <input 
-                                                type="number" 
-                                                className="form-control" 
+                                            <input
+                                                type="number"
+                                                className="form-control"
                                                 placeholder="0.00"
                                                 step="0.01"
                                                 min="0"
@@ -385,24 +385,24 @@ function GroupExpenses() {
                                         </div>
                                         <div className="col-12">
                                             <label className="form-label fw-bold small">Description</label>
-                                            <textarea 
-                                                className="form-control" 
+                                            <textarea
+                                                className="form-control"
                                                 rows="2"
                                                 placeholder="Optional description"
                                                 value={expenseDescription}
                                                 onChange={(e) => setExpenseDescription(e.target.value)}
                                             ></textarea>
                                         </div>
-                                        
+
                                         {/* Split Type Selection */}
                                         <div className="col-12">
                                             <label className="form-label fw-bold small">Split Type</label>
                                             <div className="d-flex gap-3">
                                                 <div className="form-check">
-                                                    <input 
-                                                        className="form-check-input" 
-                                                        type="radio" 
-                                                        name="splitType" 
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="radio"
+                                                        name="splitType"
                                                         id="equalSplit"
                                                         checked={splitType === 'equal'}
                                                         onChange={() => setSplitType('equal')}
@@ -412,10 +412,10 @@ function GroupExpenses() {
                                                     </label>
                                                 </div>
                                                 <div className="form-check">
-                                                    <input 
-                                                        className="form-check-input" 
-                                                        type="radio" 
-                                                        name="splitType" 
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="radio"
+                                                        name="splitType"
                                                         id="customSplit"
                                                         checked={splitType === 'custom'}
                                                         onChange={() => setSplitType('custom')}
@@ -436,9 +436,9 @@ function GroupExpenses() {
                                                 {group?.membersEmail?.map((member, index) => (
                                                     <div key={index} className="d-flex align-items-center justify-content-between mb-2">
                                                         <div className="form-check">
-                                                            <input 
-                                                                className="form-check-input" 
-                                                                type="checkbox" 
+                                                            <input
+                                                                className="form-check-input"
+                                                                type="checkbox"
                                                                 id={`member-${index}`}
                                                                 checked={!excludedMembers.includes(member)}
                                                                 onChange={() => handleMemberExclusion(member)}
@@ -449,14 +449,14 @@ function GroupExpenses() {
                                                         </div>
                                                         {splitType === 'equal' ? (
                                                             <span className="badge bg-secondary">
-                                                                {!excludedMembers.includes(member) 
-                                                                    ? `₹${calculateEqualSplit()[member] || '0.00'}` 
+                                                                {!excludedMembers.includes(member)
+                                                                    ? `₹${calculateEqualSplit()[member] || '0.00'}`
                                                                     : 'Excluded'}
                                                             </span>
                                                         ) : (
-                                                            <input 
-                                                                type="number" 
-                                                                className="form-control form-control-sm" 
+                                                            <input
+                                                                type="number"
+                                                                className="form-control form-control-sm"
                                                                 style={{ width: '100px' }}
                                                                 placeholder="0.00"
                                                                 step="0.01"
@@ -476,8 +476,8 @@ function GroupExpenses() {
                                         <button type="submit" className="btn btn-success px-4">
                                             <i className="bi bi-check-lg me-2"></i>Save Expense
                                         </button>
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             className="btn btn-outline-secondary px-4"
                                             onClick={() => {
                                                 setShowAddExpense(false);
@@ -546,7 +546,7 @@ function GroupExpenses() {
                                                         ₹{expense.totalAmount?.toFixed(2)}
                                                     </h5>
                                                     {permissions.canDeleteExpenses && !expense.isSettled && (
-                                                        <button 
+                                                        <button
                                                             className="btn btn-sm btn-outline-danger"
                                                             onClick={() => handleDeleteExpense(expense._id)}
                                                         >
@@ -555,10 +555,10 @@ function GroupExpenses() {
                                                     )}
                                                 </div>
                                             </div>
-                                            
+
                                             {/* Split Details Accordion */}
                                             <div className="mt-3">
-                                                <button 
+                                                <button
                                                     className="btn btn-sm btn-link text-decoration-none p-0"
                                                     type="button"
                                                     data-bs-toggle="collapse"

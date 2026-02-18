@@ -27,14 +27,12 @@ function Header() {
                             </Link>
                         </li>
                         <li className="nav-item ms-lg-3 mt-2 mt-lg-0">
-                            <Link className="btn btn-primary rounded-pill px-4 fw-bold 
-shadow-sm" to="/login">
+                            <Link className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" to="/login">
                                 Login
                             </Link>
                         </li>
                         <li className="nav-item ms-lg-3 mt-2 mt-lg-0">
-                            <Link className="btn btn-primary rounded-pill px-4 fw-bold 
-shadow-sm" to="/register">
+                            <Link className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" to="/register">
                                 Register
                             </Link>
                         </li>

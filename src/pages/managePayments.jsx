@@ -24,7 +24,7 @@ function ManagePayments() {
     const [errors, setErrors] = useState([]);
     const [userProfile, setUserProfile] = useState(null);
     const [message, setMessage] = useState(null);
-    
+
     const getUserProfile = async () => {
         try {
             const resp = await axios.get(`${serverEndpoint}/profile/get-user-info`, { withCredentials: true });

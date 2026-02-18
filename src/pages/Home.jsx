@@ -5,7 +5,7 @@ function Home() {
     const navigate = useNavigate();
     const routeReg = () => {
         navigate('/login');
-    }
+    };
 
     return (
         <>

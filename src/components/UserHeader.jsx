@@ -4,11 +4,13 @@ import { useSelector } from 'react-redux';
 function UserHeader() {
     const user = useSelector((state) => state.userDetails);
     const location = useLocation();
+
     const isActive = (path) => {
         location.pathname === path ?
             "active fw-bold text-primary" :
             "text-secondary";
-    }
+    };
+
     return (
         <nav className="navbar navbar-expand-lg bg-white sticky-top border-bottom shadow-sm py-2">
             <div className="container">
@@ -47,8 +49,8 @@ function UserHeader() {
                                 aria-expanded="false"
                             >
                                 <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2 shadow-sm"
-                                    style={{ width: "28px", height: "28px",  fontSize: "12px",}}>
-                                     {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                                    style={{ width: "28px", height: "28px", fontSize: "12px", }}>
+                                    {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
                                 </div>
                                 <span className="text-dark fw-medium small">
                                     {user ? user.name : <>Account</>}
@@ -59,10 +61,10 @@ function UserHeader() {
                                 <li className="px-3 py-2 border-bottom mb-1"
                                     style={{ minWidth: "200px" }}>
                                     <p className="mb-0 small fw-bold text-dark">
-                                         Signed in as
+                                        Signed in as
                                     </p>
                                     <p className="mb-0 small text-muted">
-                                         {user?.email}
+                                        {user?.email}
                                     </p>
                                 </li>
 
@@ -86,7 +88,7 @@ function UserHeader() {
 
                                 <li>
                                     <Link className="dropdown-item py-2 text-danger fw-medium" to="/logout">
-                                         <i className="bi bi-box-arrow-right me-2"></i>{" "}
+                                        <i className="bi bi-box-arrow-right me-2"></i>{" "}
                                         Logout
                                     </Link>
                                 </li>

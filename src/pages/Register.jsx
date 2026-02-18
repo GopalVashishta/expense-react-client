@@ -16,7 +16,8 @@ function Register({ setUser }) {
             ...prev,
             [name]: value
         }));
-    }
+    };
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();//prevent default behaviour i.e.  Page reload
         try {
@@ -36,7 +37,7 @@ function Register({ setUser }) {
             console.log("Error during login:", err);
             setErrors({ message: "Login failed. Please try again." });
         }
-    }
+    };
 
     return (
         <>

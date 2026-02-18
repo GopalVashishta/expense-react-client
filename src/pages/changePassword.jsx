@@ -5,15 +5,21 @@ import { useNavigate } from 'react-router-dom';
 function ChangePassword() {
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
+    const [formData, setFormData] = useState({
+        email: "",
+        newPassword: "",
+        otp: ""
+    });
+
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
 
-        setFormdata((prev) => ({
+        setFormData((prev) => ({
             ...prev,
             [name]: value
         }));
-    }
+    };
 
     const handleChangePassword = async (event) => {
         event.preventDefault();
@@ -28,9 +34,11 @@ function ChangePassword() {
             console.log("Password changed successfully.");
             navigate('/login');
         } catch (error) {
+            setErrors({ message: error.response?.data?.message || "Error changing password" });
             console.error("Error changing password:", error);
         }
-    }
+    };
+
     return (
         <>
             <div className="row justify-content-center py-5">
@@ -39,7 +47,8 @@ function ChangePassword() {
                     <form onSubmit={handleChangePassword}>
                         <div className='mb-3'>
                             <label className="form-label small fw-bold text-secondary">Email</label>
-                            <input type="email" name="email" placeholder="name@example.com" className={`form-control form-control-lg rounded-3 fs-6 ${errors.email ? "is-invalid" : ""}`}
+                            <input type="email" name="email"
+                                value={formData.email} placeholder="name@example.com" className={`form-control form-control-lg rounded-3 fs-6 ${errors.email ? "is-invalid" : ""}`}
                                 onChange={handleChange} required={true} />
 
                             {errors.email && (<div className="invalid-feedback">{errors.email}</div>)}
@@ -47,14 +56,20 @@ function ChangePassword() {
 
                         <div className='mb-4'>
                             <label className="form-label small fw-bold text-secondary">New Password</label>
-                            <input type="password" name="newPassword" placeholder="Password" className={`form-control form-control-lg rounded-3 fs-6 ${errors.password ? "is-invalid" : ""}`}
-                                onClick={handleChange} required={true} />
+                            <input type="password" name="newPassword"
+                                value={formData.newPassword} placeholder="Password" className={`form-control form-control-lg rounded-3 fs-6 ${errors.newPassword ? "is-invalid" : ""}`}
+                                onChange={handleChange} required={true} />
+
+                            {errors.newPassword && (<div className="invalid-feedback">{errors.newPassword}</div>)}
                         </div>
 
                         <div className='mb-4'>
                             <label className="form-label small fw-bold text-secondary">OTP</label>
-                            <input type="text" name="otp" placeholder="123456" className={`form-control form-control-lg rounded-3 fs-6 ${errors.password ? "is-invalid" : ""}`}
+                            <input type="text" name="otp"
+                                value={formData.otp} placeholder="123456" className={`form-control form-control-lg rounded-3 fs-6 ${errors.otp ? "is-invalid" : ""}`}
                                 onChange={handleChange} required={true} />
+
+                            {errors.otp && (<div className="invalid-feedback">{errors.otp}</div>)}
                         </div>
 
                         <div className="d-flex justify-content-center">
@@ -65,5 +80,6 @@ function ChangePassword() {
             </div>
         </>
     );
-}
+};
+
 export default ChangePassword;

@@ -47,7 +47,8 @@ export const ROLE_PERMISSIONS = {
         canSettleExpenses: true,
     }
 };
+
 export const usePermissions = () => {
     const user = useSelector((state) => state.userDetails);
     return ROLE_PERMISSIONS[user?.role] || {};
-}
+};

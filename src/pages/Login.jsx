@@ -6,11 +6,14 @@ import { serverEndpoint } from "../config/appConfig.js";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "../redux/user/action.js";
 // import ".login.css"; this will add css to this component
+
 function Login() {
     const [formdata, setFormdata] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState("");
+
     const dispatch = useDispatch(); // gives us the dispatch function
+
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -19,7 +22,8 @@ function Login() {
             ...prev,
             [name]: value
         }));
-    }
+    };
+
     const validate = () => {
         let newErorrs = {};
         let isValid = true;
@@ -34,7 +38,8 @@ function Login() {
         }
         setErrors(newErorrs);
         return isValid;
-    }
+    };
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();//prevent default behaviour i.e.  Page reload
         if (validate()) {
@@ -57,7 +62,7 @@ function Login() {
         } else {
             console.log("Invalid form");
         }
-    }
+    };
 
     const handleGoogleSuccess = async (authResponse) => {
         try {
@@ -70,18 +75,19 @@ function Login() {
             console.log("Error during Google SSO login:", err);
             setErrors({ message: "Google SSO login failed. Please try again." });
         }
-    }
+    };
 
     const handleGoogleError = (error) => {
         console.log(error);
         setErrors({ message: "Something went wrong while performing google single sign-on" });
-    }
+    };
 
     return (
         <div className="container py-5">
             <h3 className="display-6 fw-bold mb-4 text-center">Login Here</h3>
-            {message && (message)}
-            {errors.message && (errors.message)}
+            {message && (<div className="alert alert-success">{message}</div>)}
+            {errors.message && (<div className="alert alert-danger">{errors.message}</div>)}
+
             <div className="row justify-content-center">
                 <div className="col-6">
                     <form onSubmit={handleFormSubmit}>
@@ -106,7 +112,7 @@ function Login() {
                         </div>
                     </form>
                 </div>
-                
+
                 <div className="row justify-content-center">
                     <div className="col-6">
                         <p>Don't have an account? <Link to="/register">Register here</Link></p>
